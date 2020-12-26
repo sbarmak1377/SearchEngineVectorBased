@@ -11,16 +11,13 @@ def champion_list_creator(invertedIndex: InvertedIndex, docs, k):
         temp_res = []
         for j in range(len(arr)):
             id_location = Document.documents_binary_search(docs, 0, len(docs) - 1, arr[j])
-            tf = docs[id_location].words_dictionary.get(word)
-            idf = WeightCalculator.idf(word, docs)
             weight = WeightCalculator.weight_calculator_doc(word, docs, docs[id_location])
             temp_res.append([arr[j], weight])
         res = soter(temp_res, k)
         index = InvertedIndex.Index(word)
         index.set_docs_id(res)
-        result.index_array.append(index)
+        result.index_array[i].append(index)
     return result
-
 
 
 def soter(temp_res, k):
