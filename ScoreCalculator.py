@@ -1,6 +1,7 @@
 import Document
 import InvertedIndex
 import WeightCalculator
+import CosinusCalculator
 
 
 def score_calculator(invertedIndex: InvertedIndex, docs, query, k):
@@ -15,6 +16,11 @@ def score_calculator(invertedIndex: InvertedIndex, docs, query, k):
         else:
             index_res.append(invertedIndex.index_array[loc])
     docs_score = docs_score_calculator(index_res, docs)
+    max_heap = CosinusCalculator.cosinus_max_heap_creator(query_score, docs_score)
+    res = []
+    for i in range(k):
+        res.append(max_heap.pop())
+    return res
 
 
 def docs_score_calculator(indexes, docs):

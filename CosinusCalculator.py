@@ -1,3 +1,8 @@
+import math
+import MaxHeap
+from InvertedIndex import InvertedIndex
+
+
 class CosinusHelper:
     id = -1
     words = []
@@ -33,6 +38,7 @@ class CosinusArray:
                 else:
                     self.helper_array[index].words.append(word)
                     self.helper_array[index].weights.append(arr[j][1])
+        self.helper_array = sorted(self.helper_array)
 
 
 def find_index_cosinus_helper(arr, doc_id):
@@ -40,3 +46,37 @@ def find_index_cosinus_helper(arr, doc_id):
         if arr[i].id == doc_id:
             return i
     return -1
+
+
+def single_cosinus_score(helper1: CosinusHelper, helper2: CosinusHelper):
+    sum1 = 0
+    sum2 = 0
+    for i in range(len(helper1.weights)):
+        sum1 += math.pow(helper1.weights[i], 2)
+    for i in range(len(helper2.weights)):
+        sum2 += math.pow(helper2.weights[i], 2)
+    length1 = math.pow(sum1, 1 / 2)
+    length2 = math.pow(sum2, 1 / 2)
+    if length1 == 0 or length2 == 0:
+        return 0
+    score_sum = 0
+    for i in range(len(helper1.words)):
+        for j in range(len(helper2.words)):
+            if helper1.words[i] == helper2.words[j]:
+                score_sum += helper1.weights[i] * helper2.weights[j]
+                break
+    return score_sum / (length1 * length2)
+
+
+# uses Above Class to perform better in creating max heap
+def cosinus_max_heap_creator(query_res, docs_res):
+    helper = CosinusArray(query_res, docs_res)
+    score_final_result = []
+    i = 1
+    while i < len(helper.helper_array):
+        score_final_result.append(
+            [helper.helper_array[i].id, single_cosinus_score(helper.helper_array[0], helper.helper_array[i])])
+    max_heap = MaxHeap.MaxHeap()
+    for i in range(len(score_final_result)):
+        max_heap.push(score_final_result[i])
+    return max_heap
