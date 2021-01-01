@@ -25,7 +25,7 @@ def tf(word: str, doc: Document):
 def weight_calculator_doc(word: str, docs, doc):
     doc_idf = idf(word, docs)
     word_doc_fr = tf(word, doc)
-    if doc_idf > 0.5:
+    if doc_idf < 0.3:
         return doc_idf * word_doc_fr
     else:
         return 0
