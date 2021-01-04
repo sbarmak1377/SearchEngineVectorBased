@@ -1,9 +1,10 @@
 class Index:
     word = ""
-    doc_ids = []
+    doc_ids = list()
 
     def __init__(self, word):
         self.word = word
+        self.doc_ids = list()
 
     def add_id(self, doc_id):
         self.doc_ids.append(doc_id)
@@ -90,3 +91,8 @@ class InvertedIndex:
             else:
                 self.index_array[ind].remove_id(id_loc)
                 return True
+
+    def print_all(self):
+        for i in range(len(self.index_array)):
+            print(self.index_array[i].word)
+            print(self.index_array[i].doc_ids)

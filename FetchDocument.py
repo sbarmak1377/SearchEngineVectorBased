@@ -1,14 +1,16 @@
 import os
-from Document import *
+from typing import List
+import Document
 
 
 def getAllDocuments():
     files = os.listdir("./Docs")
     for i in range(len(files)):
         files[i] = "./Docs/" + files[i]
-    docs = []
+    docs: List[Document.Document] = []
     for single_file in files:
-        docs.append(Document(single_file, 0))
+        x = Document.Document(single_file, 0)
+        docs.append(x)
     docs = sorted(docs)
     return docs
 
