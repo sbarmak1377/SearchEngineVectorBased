@@ -76,7 +76,7 @@ class Document:
 def documents_binary_search(docs, start, end, id):
     if end >= start:
 
-        mid = start + (end - start) / 2
+        mid = start + int((end - start) / 2)
 
         if docs[mid].doc_id == id:
             return mid
@@ -85,7 +85,7 @@ def documents_binary_search(docs, start, end, id):
             return documents_binary_search(docs, start, mid - 1, id)
 
         else:
-            return docs(docs, mid + 1, end, id)
+            return documents_binary_search(docs, mid + 1, end, id)
 
     else:
         return -1

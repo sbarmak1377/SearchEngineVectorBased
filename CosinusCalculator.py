@@ -20,9 +20,11 @@ class CosinusArray:
 
     def __init__(self, query_res, docs_res):
         temp = CosinusHelper()
+        # print(query_res)
+        # print(docs_res)
         for i in range(len(query_res)):
-            temp.words.append(query_res[0])
-            temp.weights.append(query_res[1])
+            temp.words.append(query_res[i][0])
+            temp.weights.append(query_res[i][1])
         self.helper_array.append(temp)
 
         for i in range(len(docs_res)):

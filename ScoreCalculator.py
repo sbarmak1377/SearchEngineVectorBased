@@ -8,6 +8,7 @@ def score_calculator(invertedIndex: InvertedIndex, docs, query, k):
     query_doc = Document.Document(query, 1)
     query_score = query_score_calculator(query_doc, docs)
     query_words = query_doc.words
+    query_words = sorted(query_words)
     index_res = []
     for i in range(len(query_words)):
         loc = invertedIndex.find_word(query_words[i])
@@ -18,8 +19,12 @@ def score_calculator(invertedIndex: InvertedIndex, docs, query, k):
     docs_score = docs_score_calculator(index_res, docs)
     max_heap = CosinusCalculator.cosinus_max_heap_creator(query_score, docs_score)
     res = []
-    for i in range(k):
-        res.append(max_heap.pop())
+    if len(max_heap.heap) > 1 and len(max_heap.heap) > k:
+        for i in range(k):
+            res.append(max_heap.pop())
+    elif 1 < len(max_heap.heap) < k + 1:
+        for i in range(len(max_heap.heap)):
+            res.append(max_heap.pop())
     return res
 
 

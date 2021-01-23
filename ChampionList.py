@@ -3,8 +3,8 @@ import WeightCalculator
 import Document
 
 
-def champion_list_creator(invertedIndex: InvertedIndex, docs, k):
-    result = InvertedIndex()
+def champion_list_creator(invertedIndex: InvertedIndex, docs, r):
+    result = InvertedIndex.InvertedIndex()
     for i in range(len(invertedIndex.index_array)):
         word = invertedIndex.index_array[i].word
         arr = invertedIndex.index_array[i].doc_ids
@@ -13,14 +13,14 @@ def champion_list_creator(invertedIndex: InvertedIndex, docs, k):
             id_location = Document.documents_binary_search(docs, 0, len(docs) - 1, arr[j])
             weight = WeightCalculator.weight_calculator_doc(word, docs, docs[id_location])
             temp_res.append([arr[j], weight])
-        res = soter(temp_res, k)
+        res = sorter(temp_res, r)
         index = InvertedIndex.Index(word)
         index.set_docs_id(res)
-        result.index_array[i].append(index)
+        result.index_array.append(index)
     return result
 
 
-def soter(temp_res, k):
+def sorter(temp_res, r):
     res = []
     for i in range(len(temp_res)):
         for j in range(len(temp_res)):
@@ -28,6 +28,10 @@ def soter(temp_res, k):
                 tmp = temp_res[j]
                 temp_res[j] = temp_res[i]
                 temp_res[i] = tmp
-    for i in range(k):
-        res.append(temp_res[k][0])
+    if len(temp_res) > r:
+        for i in range(r):
+            res.append(temp_res[i][0])
+    else:
+        for i in range(len(temp_res)):
+            res.append(temp_res[i][0])
     return sorted(res)
