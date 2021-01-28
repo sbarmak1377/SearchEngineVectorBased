@@ -11,6 +11,5 @@ if __name__ == '__main__':
             inverted_index.add_id(docs[i].words[j], docs[i].doc_id)
     inverted_index.print_all()
     query = input("Please Enter your Query:\n")
-    res = []
-    res.append(SimpleQueryhandler.query_handler(query, inverted_index))
+    res = [SimpleQueryhandler.query_handler(query, inverted_index)]
     print(res)

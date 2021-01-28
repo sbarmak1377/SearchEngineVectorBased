@@ -44,7 +44,7 @@ class Index:
 class InvertedIndex:
 
     def __init__(self):
-        self.index_array = []
+        self.index_array = list()
 
     def remove_word(self, word):
         for i in range(len(self.index_array)):
@@ -91,6 +91,39 @@ class InvertedIndex:
             else:
                 self.index_array[ind].remove_id(id_loc)
                 return True
+
+    def merge(self, index_array):
+        for x in index_array:
+            print(x)
+            print(x.word)
+            loc = self.find_word(x.word)
+            if loc == -1:
+                self.add_word(x)
+                for id in x.doc_ids:
+                    self.add_id(x, id)
+            else:
+                merged = self.sub_merge(self.index_array[loc].doc_ids, x.doc_ids)
+                self.index_array[loc].doc_ids = merged
+
+
+    def sub_merge(self, word_docs, doc_ids):
+        p1 = 0
+        p2 = 0
+        res = list()
+        while p1 < len(word_docs) and p2 < len(doc_ids):
+            if word_docs[p1] == doc_ids[p2]:
+                res.append(word_docs[p1])
+                p1 += 1
+                p2 += 1
+            elif word_docs[p1] > doc_ids[p2]:
+                res.append(doc_ids[p2])
+                p2 += 1
+            else:
+                res.append(word_docs[p1])
+                p1 +=1
+        res = res + word_docs[p1:] + doc_ids[p2:]
+        return res
+
 
     def print_all(self):
         for i in range(len(self.index_array)):
