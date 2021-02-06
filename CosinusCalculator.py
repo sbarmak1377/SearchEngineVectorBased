@@ -14,6 +14,17 @@ class CosinusHelper:
     def __lt__(self, other):
         return self.id < other.id
 
+    def sort(self):
+        for i in range(len(self.words)):
+            for j in range(len(self.words)):
+                if self.words[j] < self.words[i]:
+                    temp = self.words[j]
+                    self.words[j] = self.words[i]
+                    self.words[i] = temp
+                    temp = self.weights[j]
+                    self.weights[j] = self.weights[i]
+                    self.weights[i] = temp
+
 
 class CosinusArray:
     helper_array = []
@@ -25,6 +36,7 @@ class CosinusArray:
         for i in range(len(query_res)):
             temp.words.append(query_res[i][0])
             temp.weights.append(query_res[i][1])
+        temp.sort()
         self.helper_array.append(temp)
 
         for i in range(len(docs_res)):

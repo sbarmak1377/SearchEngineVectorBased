@@ -28,12 +28,14 @@ def find_best_cluster_index(inverted_indexes, centroids, query_scores):
         for j in range(len(inverted_indexes[i].index_array)):
             helper.words.append(inverted_indexes[i].index_array[j])
             helper.weights.append(centroids[i][j])
+        helper.sort()
         centroid_helpers.append(helper)
     for i in range(len(query_scores)):
         helper = CosinusCalculator.CosinusHelper()
         for j in range(len(query_scores[i])):
             helper.words.append(query_scores[i][j][0])
             helper.weights.append(query_scores[i][j][1])
+        helper.sort()
         query_helpers.append(helper)
     for i in range(len(centroids)):
         score = CosinusCalculator.single_cosinus_score(centroid_helpers[i], query_helpers[i])
